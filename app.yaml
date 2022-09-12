@@ -1,0 +1,41 @@
+payloads:
+  db:
+    runtime: "vm"
+    params:
+      image_hash: "9625e796ac839766452bc5da2b56c2ee12d9e8f1f3854146df0ed7dc"
+  backend:
+    runtime: "vm"
+    params:
+      image_hash: "f6be0a31a20ca835768bec8484d1cf4a919e5e7eab4c42436fa389c0"
+  frontend:
+    runtime: "vm"
+    params:
+      image_hash: "e476ddb8011acf687ed9cb4ca039fc6950bff8a43d5b2b7f765c4a91"
+nodes:
+  db:
+    payload: "db"
+    entrypoint:
+    network: "default"
+    ip:
+      - "192.168.0.2"
+  backend:
+    payload: "backend"
+    entrypoint:
+      - ["/react-rust-postgres"]
+    network: "default"
+    ip:
+      - "192.168.0.3"
+    depends_on:
+      - "db"
+  frontend:
+    payload: "frontend"
+    entrypoint:
+    http_proxy:
+      ports:
+        - "3000"  # specify just the remote port, allow the local port to be automatically chosen
+    network: "default"
+    ip:
+      - "192.168.0.4"
+networks:
+  default:
+    ip: "192.168.0.0/24"

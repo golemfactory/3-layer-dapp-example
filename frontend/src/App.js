@@ -8,7 +8,6 @@ function App() {
     }
 
   const [message, setMessage] = useState();
-  const startTime = Date.now();
   useEffect(() => {
     fetch("/api/users")
       .then((res) => res.json())
