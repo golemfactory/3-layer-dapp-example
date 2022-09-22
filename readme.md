@@ -1,4 +1,4 @@
-## Golem compose sample 3-layer app
+## 3 layer app
 
 ### Quick start on Golem network
 
