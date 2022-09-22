@@ -2,26 +2,38 @@ payloads:
   db:
     runtime: "vm"
     params:
-      image_hash: "9625e796ac839766452bc5da2b56c2ee12d9e8f1f3854146df0ed7dc"
+      image_hash: "45d6089fbc0b8b424941863df689fa8fdccce0344e9efa18d3d1315e"
   backend:
     runtime: "vm"
     params:
-      image_hash: "f6be0a31a20ca835768bec8484d1cf4a919e5e7eab4c42436fa389c0"
+      image_hash: "d7556b193580e6ad3867a7cfca9ab07e796c00e5bb723658ce0f12aa"
   frontend:
     runtime: "vm"
     params:
-      image_hash: "e476ddb8011acf687ed9cb4ca039fc6950bff8a43d5b2b7f765c4a91"
+      image_hash: "d436707b50f945e3a9c180e9f0407af5b8b84ae606a1e77c1ef37410"
 nodes:
   db:
     payload: "db"
     entrypoint:
+      - ["/bin/chmod", "777", "/"]
+      - ["/bin/bash", "-c", "/etc/init.d/postgresql start"]
+      - [
+          "/bin/bash",
+          "-c",
+          'sudo -u postgres psql -c "ALTER USER postgres PASSWORD ''mysecretpassword''; " ',
+        ]
+      - [
+          "/bin/bash",
+          "-c",
+          'sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE postgres TO postgres;" ',
+        ]
     network: "default"
     ip:
       - "192.168.0.2"
   backend:
     payload: "backend"
     entrypoint:
-      - ["/react-rust-postgres"]
+      - ["/bin/bash", "-c", "./react-rust-postgres &"]
     network: "default"
     ip:
       - "192.168.0.3"
@@ -30,9 +42,11 @@ nodes:
   frontend:
     payload: "frontend"
     entrypoint:
+      - ["/bin/chmod", "777", "/"]
+      - ["/docker-entrypoint.sh", "nginx"]
     http_proxy:
       ports:
-        - "3000"  # specify just the remote port, allow the local port to be automatically chosen
+        - "3000" # specify just the remote port, allow the local port to be automatically chosen
     network: "default"
     ip:
       - "192.168.0.4"

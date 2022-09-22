@@ -1,0 +1,10 @@
+yagna:
+  # api_url: "http://localhost:17900"
+  # gsb_url: "http://localhost:17901"
+  app_key: "$YAGNA_APPKEY"
+  subnet_tag: "hybrid"
+
+payment:
+  budget: 1.0 # GLM
+  driver: "erc20"
+  network: "rinkeby"

@@ -14,8 +14,10 @@ FROM development AS builder
 
 RUN npm run build
 
-FROM nginx:1.13-alpine
+FROM nginx:1.23-alpine
 
+COPY default.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /code/build /usr/share/nginx/html
+
 
 EXPOSE 3000
