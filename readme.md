@@ -1,80 +1,39 @@
-## Compose sample application
+## Golem compose sample 3-layer app
 
-### Use with Docker Development Environments
+### Quick start on Golem network
 
-You can open this sample in the Dev Environments feature of Docker Desktop version 4.12 or later.
+#### Prerequisites
 
-### React application with a Rust backend and a Postgresql database
+- Installed `dapp-runner` instructions https://github.com/golemfactory/dapp-runner
+- Yagna daemon running as requestor (please follow https://handbook.golem.network/requestor-tutorials/flash-tutorial-of-requestor-development)
+- YAGNA_APPKEY environment variable set to your yagna app-key
+- [optional] if you want to run this app on specific subnet, on different network or with non-default yagna urls, please edit `config.yaml` accordingly
 
-Project structure:
-```
-.
-├── backend
-│   ├── Dockerfile
-│   ...
-├── compose.yaml
-├── frontend
-│   ├── ...
-│   └── Dockerfile
-└── README.md
-```
+#### Run application
 
-[_compose.yaml_](compose.yaml)
-```
-services:
-  backend:
-    build: backend
-    ...
-  db:
-    image: postgres:12-alpine
-    ...
-  frontend:
-    build: frontend
-    ports:
-    - 3000:3000
-    ...
-```
-The compose file defines an application with three services `frontend`, `backend` and `db`.
-When deploying the application, docker compose maps port 3000 of the frontend service container to port 3000 of the host as specified in the file.
-Make sure port 3000 on the host is not already being in use.
-
-## Deploy with docker compose
+After meeting all prerequisites, execute following command:
 
 ```
-$ docker compose up -d
-Creating network "react-rust-postgres_default" with the default driver
-Building backend
-...
-Successfully tagged react-rust-postgres_frontend:latest
-WARNING: Image for service frontend was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
-Creating react-rust-postgres_frontend_1 ... done
-Creating react-rust-postgres_db_1       ... done
-Creating react-rust-postgres_backend_1  ... done
+dapp-runner start --config config.yaml app.yaml
 ```
 
-## Expected result
+After a while you should get yellow log in terminal containing following message:
 
-Listing containers must show three containers running and the port mapping as below:
 ```
-$ docker ps
-CONTAINER ID        IMAGE                          COMMAND                  CREATED             STATUS              PORTS                    NAMES
-30b7d9dc4898        react-rust-postgres_backend    "cargo run --offline"    37 seconds ago      Up 35 seconds       8000/tcp                 react-rust-postgres_backend_1
-0bca0cb682b8        react-rust-postgres_frontend   "docker-entrypoint.s…"   42 seconds ago      Up 41 seconds       0.0.0.0:3000->3000/tcp   react-rust-postgres_frontend_1
-1611961bf3d1        postgres:12-alpine             "docker-entrypoint.s…"   42 seconds ago      Up 36 seconds       0.0.0.0:5432->5432/tcp   react-rust-postgres_db_1
+{"db": {"0": "running"}, "frontend": {"0": "running"}, "backend": {"0": "running"}}
+Dapp started.
 ```
 
-After the application starts, navigate to `http://localhost:3000` in your web browser to get a colorful message.
+Then navigate to `localhost:8080` in your browser.
+This address can be found in following terminal log:
 
+```
+{"frontend": {"local_proxy_address": "http://localhost:8080"}}
+```
+
+You should be able to see following page:
 ![page](./capture.png)
 
-Stop and remove the containers
-```
-$ docker compose down
-Stopping react-rust-postgres_backend_1  ... done
-Stopping react-rust-postgres_frontend_1 ... done
-Stopping react-rust-postgres_db_1       ... done
-Removing react-rust-postgres_backend_1  ... done
-Removing react-rust-postgres_frontend_1 ... done
-Removing react-rust-postgres_db_1       ... done
-Removing network react-rust-postgres_default
-```
+### Quick start with docker compose
+
+If you want to run it with docker-compose, please checkout to e7f76a48149053e71d42f16b95b2dc6ec6534817 commit.
