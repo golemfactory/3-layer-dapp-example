@@ -10,7 +10,7 @@ payloads:
   frontend:
     runtime: "vm"
     params:
-      image_hash: "4fa2167dfedfbf7ebd800a850ab01c660d3521693935137df57fa561"
+      image_hash: "d436707b50f945e3a9c180e9f0407af5b8b84ae606a1e77c1ef37410"
 nodes:
   db:
     payload: "db"
