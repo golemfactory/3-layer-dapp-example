@@ -2,7 +2,7 @@ payloads:
   db:
     runtime: "vm"
     params:
-      image_hash: "283d7bebe2dd26dfc20fcb2e7cc44870f3d18dee830b4e39fa391181"
+      image_hash: "45d6089fbc0b8b424941863df689fa8fdccce0344e9efa18d3d1315e"
   backend:
     runtime: "vm"
     params:
@@ -16,16 +16,6 @@ nodes:
     payload: "db"
     entrypoint:
       - ["/bin/chmod", "777", "/"]
-      - [
-          "/bin/bash",
-          "-c",
-          "echo listen_addresses = \\'*\\' >> /etc/postgresql/14/main/postgresql.conf",
-        ]
-      - [
-          "/bin/bash",
-          "-c",
-          "echo 'host  all  all 0.0.0.0/0 md5' >> /etc/postgresql/14/main/pg_hba.conf",
-        ]
       - ["/bin/bash", "-c", "/etc/init.d/postgresql start"]
       - [
           "/bin/bash",
@@ -37,7 +27,6 @@ nodes:
           "-c",
           'sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE postgres TO postgres;" ',
         ]
-
     network: "default"
     ip:
       - "192.168.0.2"
