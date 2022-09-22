@@ -15,19 +15,7 @@ nodes:
   db:
     payload: "db"
     entrypoint:
-      # - ["/usr/bin/mkdir", "/var/lib/postgresql/data"]
-      # - ["/usr/bin/whoami"]
-      # - ["/bin/bash", "-c", "ln -s usr/local/bin/docker-entrypoint.sh"]
-      # - ["/bin/mkdir", "-p", "/var/lib/pg_data"]
-      # - ["/bin/chmod", "777", "/var/lib/pg_data"]
-      # - ["/bin/chown", "postgres:postgres", "/var/lib/pg_data"]
       - ["/bin/chmod", "777", "/"]
-      # - ["/docker-entrypoint.sh", "postgres"]
-      # - [
-      #     "/bin/bash",
-      #     "-c",
-      #     "su postgres -c '/usr/local/bin/docker-entrypoint.sh postgres'",
-      #   ]
       - [
           "/bin/bash",
           "-c",
@@ -53,15 +41,10 @@ nodes:
     network: "default"
     ip:
       - "192.168.0.2"
-    # http_proxy:
-    #   ports:
-    #     - "5432" # specify just the remote port, allow the local port to be automatically chosen
   backend:
     payload: "backend"
     entrypoint:
-      - ["/bin/bash", "-c", "./react-rust-postgres > log.txt 2>&1 &"]
-      - ["/bin/chmod", "777", "/"]
-      # - ["/bin/bash", "-c", "sleep 60 && cat log.txt"]
+      - ["/bin/bash", "-c", "./react-rust-postgres &"]
     network: "default"
     ip:
       - "192.168.0.3"
