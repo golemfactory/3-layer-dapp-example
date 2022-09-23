@@ -7,7 +7,8 @@
 - Installed `dapp-runner` (please follow https://github.com/golemfactory/dapp-runner)
 - Yagna daemon running as requestor (please follow https://handbook.golem.network/requestor-tutorials/flash-tutorial-of-requestor-development)
 - YAGNA_APPKEY environment variable set to your yagna app-key
-- [optional] if you want to run this app on specific subnet, on different network or with non-default yagna urls, please edit `config.yaml` accordingly
+- YAGNA_API_URL and GSB_URL environment variables set accordingly to your yagna provider
+- Edited `config.yaml` accordingly to your needs
 
 #### Run application
 
